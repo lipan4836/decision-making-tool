@@ -1,17 +1,16 @@
 <template>
   <component
     :is="tag"
-    :class="classes"
+    :class="className"
   >
-    {{ content }}
+    <slot>{{ content }}</slot>
   </component>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import type { TextElOptions } from '../../types/elements';
-
-const props = defineProps<TextElOptions>()
-
-const classes = computed(() => props.classes?.join(' '))
+defineProps<{
+  tag?: string
+  className?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
+  content?: string
+}>()
 </script>

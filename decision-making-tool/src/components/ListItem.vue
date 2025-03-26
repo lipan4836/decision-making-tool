@@ -1,0 +1,103 @@
+<template>
+  <li class="item">
+    <LabelElement :classes="['item-label']">1</LabelElement>
+    <InputElement
+      type="text"
+      name="title"
+      placeholder="Enter option title"
+      :classes="['item-title']"
+      :callback="handleInputTitle"
+    />
+    <InputElement
+      type="number"
+      name="weight"
+      placeholder="Enter weight"
+      :classes="['item-weight']"
+      :callback="handleInputWeight"
+    />
+    <ButtonElement :classes="['item-btn']">DELETE</ButtonElement>
+  </li>
+</template>
+
+<script setup lang="ts">
+import ButtonElement from './elements/ButtonElement.vue';
+import InputElement from './elements/InputElement.vue';
+import LabelElement from './elements/LabelElement.vue';
+
+const handleInputTitle = (event: Event) => {
+  console.log('input value:', (event.target as HTMLInputElement).value);
+};
+
+const handleInputWeight = (event: Event) => {
+  console.log('input value:', (event.target as HTMLInputElement).value);
+};
+</script>
+
+<style lang="scss" scoped>
+.item {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: auto;
+
+  &-label {
+    padding: 5px 10px;
+    border: 1px solid rgb(255 255 255 / 87%);
+    border-radius: 5px;
+
+    @media (prefers-color-scheme: light) {
+      & {
+        border: 1px solid #242424;
+      }
+    }
+
+    @media (width <= 550px) {
+      order: 2;
+    }
+  }
+
+  &-title {
+    flex-grow: 1;
+    height: 36px;
+    padding: 0 10px;
+    border-radius: 5px;
+    line-height: 1.5;
+
+    @media (width <= 550px) {
+      order: 1;
+      width: calc(70% - 8px);
+    }
+  }
+
+  &-weight {
+    max-width: 5rem;
+    height: 36px;
+    padding: 0 10px;
+    border-radius: 5px;
+    line-height: 1.5;
+
+    @media (width <= 550px) {
+      order: 1;
+      width: calc(30% - 8px);
+    }
+  }
+
+  &-btn {
+    height: 36px;
+    padding: 5px 16px;
+    border-radius: 5px;
+
+    @media (width <= 550px) {
+      order: 2;
+      width: calc(50% - 8px);
+    }
+  }
+
+  @media (width <= 550px) {
+    gap: 8px;
+  }
+}
+</style>

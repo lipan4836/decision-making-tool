@@ -1,27 +1,24 @@
-export type ButtonOptions = {
-  classes?: string[];
-  content: string;
-  callback?: () => void;
-};
-
-export type LabelOptions = {
-  count?: string;
-  classes: string[];
-};
-
-export type InputOptions = {
-  type: string;
-  classes: string[];
+export type InputProps = {
+  type?: string;
+  class?: string | Record<string, boolean> | (string | Record<string, boolean>)[];
   id?: string;
-  name: string;
-  value?: string;
+  name?: string;
+  modelValue?: string;
   placeholder?: string;
   min?: string;
-  callback?: (event: Event) => void;
 };
 
-export type TextElOptions = {
-  tag: string;
-  classes: string[];
+export type LabelProps = {
+  class?: string | Record<string, boolean> | (string | Record<string, boolean>)[];
+};
+
+export type TextProps = {
+  tag?: string;
+  class?: string | Record<string, boolean> | (string | Record<string, boolean>)[];
+  content?: string;
+};
+
+export type ButtonProps = {
+  class?: string | Record<string, boolean> | (string | Record<string, boolean>)[];
   content?: string;
 };

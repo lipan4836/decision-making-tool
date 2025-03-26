@@ -1,12 +1,14 @@
 <template>
-  <div class="home">
-    <h1>Главная страница</h1>
-    <router-link to="/decision-making">
-      К инструменту
-    </router-link>
-  </div>
+  <main class="main">
+    <h1>Decision Making Tool</h1>
+    <ul class="list-wrap">
+      <ListItem />
+    </ul>
+  </main>
 </template>
 
 <script setup lang="ts">
+import ListItem from '../components/ListItem.vue';
+
 
 </script>

@@ -1,21 +1,19 @@
 <template>
   <button
-    :class="classes"
-    @click="handleClick"
+    :class="className"
+    @click="$emit('click', $event)"
   >
-    {{ content }}
+    <slot>{{ content }}</slot>
   </button>
 </template>
 
 <script setup lang="ts">
-import {computed} from 'vue'
-import type {ButtonOptions} from '../../types/elements'
+defineProps<{
+  className?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
+  content?: string
+}>()
 
-const props = defineProps<ButtonOptions>()
-
-const handleClick = () => {
-  if (props.callback) props.callback()
-}
-
-const classes = computed(() => props.classes?.join(' '))
+defineEmits<{
+  (e: 'click', event: MouseEvent): void
+}>()
 </script>

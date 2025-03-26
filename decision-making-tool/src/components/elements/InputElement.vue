@@ -1,25 +1,30 @@
 <template>
   <input
-    :id="id"
+  :id="id"
     :type="type"
-    :class="classes"
+    :class="className"
     :name="name"
-    :value="value"
+    :value="modelValue"
     :placeholder="placeholder"
     :min="min"
-    @input="handleInput"
+    @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+    @change="$emit('change', $event)"
   />
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import type { InputOptions } from '../../types/elements';
+defineProps<{
+  type?: string
+  className?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
+  id?: string
+  name?: string
+  modelValue?: string
+  placeholder?: string
+  min?: string
+}>()
 
-const props = defineProps<InputOptions>()
-
-const classes = computed(() => props.classes?.join(' '))
-
-const handleInput = (event: Event) => {
-  if (props.callback) props.callback(event)
-}
+defineEmits<{
+  (e: 'update:modelValue', value: string): void
+  (e: 'change', event: Event): void
+}>()
 </script>
