@@ -23,7 +23,3 @@ const handleInput = (event: Event) => {
   if (props.callback) props.callback(event)
 }
 </script>
-
-<style scoped>
-
-</style>

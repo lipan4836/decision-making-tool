@@ -15,7 +15,3 @@ const props = defineProps<TextElOptions>()
 
 const classes = computed(() => props.classes?.join(' '))
 </script>
-
-<style scoped>
-
-</style>

@@ -13,7 +13,3 @@ const props = defineProps<LabelOptions>()
 
 const classes = computed(() => props.classes?.join(' '))
 </script>
-
-<style scoped>
-
-</style>
