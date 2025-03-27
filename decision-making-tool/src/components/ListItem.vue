@@ -1,36 +1,60 @@
 <template>
   <li class="item">
-    <LabelElement :classes="['item-label']">1</LabelElement>
+    <LabelElement class="item-label">
+      {{ item.id }}
+    </LabelElement>
     <InputElement
       type="text"
       name="title"
       placeholder="Enter option title"
-      :classes="['item-title']"
-      :callback="handleInputTitle"
+      class="item-title"
+      :value="item.title"
+      @input="(e: Event) => handleInput(e, 'title')"
     />
     <InputElement
       type="number"
       name="weight"
       placeholder="Enter weight"
-      :classes="['item-weight']"
-      :callback="handleInputWeight"
+      class="item-weight"
+      :value="item.weight"
+      @input="(e: Event) => handleInput(e, 'weight')"
     />
-    <ButtonElement :classes="['item-btn']">DELETE</ButtonElement>
+    <ButtonElement
+      class="item-btn"
+      @click="$emit('remove', item.id)"
+    >
+      DELETE
+    </ButtonElement>
   </li>
 </template>
 
 <script setup lang="ts">
+import type { ListItem } from '../types/types';
+import { defineProps, defineEmits } from 'vue';
+import { assert } from '../utils/typesProtection';
 import ButtonElement from './elements/ButtonElement.vue';
 import InputElement from './elements/InputElement.vue';
 import LabelElement from './elements/LabelElement.vue';
 
-const handleInputTitle = (event: Event) => {
-  console.log('input value:', (event.target as HTMLInputElement).value);
-};
+defineProps<{
+  item: ListItem
+}>()
 
-const handleInputWeight = (event: Event) => {
-  console.log('input value:', (event.target as HTMLInputElement).value);
-};
+const emit = defineEmits<{
+  (e: 'update', data: Partial<ListItem>): void
+  (e: 'remove', id: string): void
+}>();
+
+const handleInput = (event: Event, field: keyof ListItem) => {
+  const target = event.target
+  assert(target instanceof HTMLInputElement, `${target} is not HTMLInputElement`)
+
+  const value = field === 'weight'
+    ? Number(target.value)
+    : target.value
+
+  emit('update', {[field]: value})
+}
 </script>
 
 <style lang="scss" scoped>

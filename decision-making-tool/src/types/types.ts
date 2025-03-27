@@ -22,3 +22,14 @@ export type ButtonProps = {
   class?: string | Record<string, boolean> | (string | Record<string, boolean>)[];
   content?: string;
 };
+
+export type ListItem = {
+  id: string;
+  title: string;
+  weight: number | null;
+};
+
+export type OptionList = {
+  list: ListItem[];
+  lastId: number;
+};

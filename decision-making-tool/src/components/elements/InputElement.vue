@@ -1,6 +1,6 @@
 <template>
   <input
-  :id="id"
+    :id="id"
     :type="type"
     :class="className"
     :name="name"
