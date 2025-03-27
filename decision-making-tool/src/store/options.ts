@@ -47,6 +47,13 @@ export const useOptionsStore = defineStore('options', () => {
     }
   };
 
+  const clearList = () => {
+    state.value = {
+      list: [{ id: '#1', title: '', weight: null }],
+      lastId: 1,
+    };
+  };
+
   watch(
     state,
     (newVal) => {
@@ -55,5 +62,5 @@ export const useOptionsStore = defineStore('options', () => {
     { deep: true },
   );
 
-  return { state, init, addOption, removeOption, updateOption };
+  return { state, init, addOption, removeOption, updateOption, clearList };
 });

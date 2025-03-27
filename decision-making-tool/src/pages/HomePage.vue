@@ -20,7 +20,10 @@
       <ButtonElement class="btns-block_btn">
         Past List
       </ButtonElement>
-      <ButtonElement class="btns-block_btn">
+      <ButtonElement
+        class="btns-block_btn"
+        @click="clearList"
+      >
         Clear List
       </ButtonElement>
       <ButtonElement class="btns-block_btn short">
@@ -45,7 +48,7 @@ import { useOptionsStore } from '../store/options';
 
 const store = useOptionsStore()
 const { state } = storeToRefs(store)
-const {addOption, removeOption, updateOption} = store
+const {addOption, removeOption, updateOption, clearList} = store
 
 onMounted(() => {
   store.init()
