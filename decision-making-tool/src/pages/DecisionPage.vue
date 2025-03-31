@@ -1,12 +1,114 @@
 <template>
-  <div class="home">
-    <h1>Страница приложения</h1>
-    <router-link to="/">
-      К инструменту
-    </router-link>
-  </div>
+  <main class="main">
+    <h1>Decision Making Tool</h1>
+    <div class="btns-block">
+      <ButtonElement class="btns-block_btn back">
+        <Icon name="undo-2" />
+      </ButtonElement>
+      <ButtonElement class="btns-block_btn volume">
+        <Icon name="volume-2" />
+      </ButtonElement>
+      <div class="btns-block_label duration">
+        <Icon name="timer" class="btns-block_label__svg" />
+        <InputElement
+          type="number"
+          name="duration"
+          placeholder="Enter duration"
+          class="btns-block_label__input"
+          :value="7"
+        />
+      </div>
+      <ButtonElement class="btns-block_btn start">
+        <Icon name="play" />
+      </ButtonElement>
+    </div>
+  </main>
 </template>
 
 <script setup lang="ts">
-
+import ButtonElement from '../components/elements/ButtonElement.vue';
+import InputElement from '../components/elements/InputElement.vue';
+import Icon from '../components/UI/Icon.vue';
 </script>
+
+<style scoped lang="scss">
+.btns-block {
+  display: grid;
+  grid-template: 'btn-back btn-volume duration duration' 50px 'btn-start btn-start btn-start btn-start' 50px / 50px 50px 50px 50px;
+  gap: 0.5em;
+  width: 225px;
+  margin-inline: auto;
+
+  &_btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+  }
+
+  &_label {
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    border: 1px solid #1a1a1a;
+    border-radius: 8px;
+    background-color: #1a1a1a;
+
+    &__svg {
+      width: 48px;
+      height: 48px;
+    }
+
+    &__input {
+      flex-grow: 1;
+      width: 50px;
+      height: 48px;
+      margin-left: 8px;
+      padding: 0 8px;
+      border: none;
+      border-top-right-radius: 8px;
+      border-bottom-right-radius: 8px;
+    }
+
+    @media (prefers-color-scheme: light) {
+      & {
+        background: transparent;
+      }
+    }
+  }
+}
+
+.back {
+  grid-area: btn-back;
+}
+
+.volume {
+  grid-area: btn-volume;
+}
+
+.duration {
+  grid-area: duration;
+}
+
+.start {
+  grid-area: btn-start;
+  width: 100%;
+}
+
+.picked-elem {
+  width: 70%;
+  padding: 8px 32px;
+  border-radius: 8px;
+  text-align: center;
+  background: #383838;
+  transition: all 0.5s ease-in;
+
+  @media (prefers-color-scheme: light) {
+    & {
+      background: transparent;
+    }
+  }
+}
+</style>
