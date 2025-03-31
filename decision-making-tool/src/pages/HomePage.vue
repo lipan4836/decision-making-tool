@@ -26,10 +26,16 @@
       >
         Clear List
       </ButtonElement>
-      <ButtonElement class="btns-block_btn short">
+      <ButtonElement
+        class="btns-block_btn short"
+        @click="downloadListJson"
+      >
         Save List to File
       </ButtonElement>
-      <ButtonElement class="btns-block_btn short">
+      <ButtonElement
+        class="btns-block_btn short"
+        @click="uploadListFromJson"
+      >
         Load List from File
       </ButtonElement>
       <ButtonElement class="btns-block_btn">
@@ -46,13 +52,14 @@ import ListItem from '../components/ListItem.vue';
 import ButtonElement from '../components/elements/ButtonElement.vue';
 import { useOptionsStore } from '../store/options';
 
-const store = useOptionsStore()
-const { state } = storeToRefs(store)
-const {addOption, removeOption, updateOption, clearList} = store
+const store = useOptionsStore();
+const { state } = storeToRefs(store);
+const { addOption, removeOption, updateOption, clearList, downloadListJson, uploadListFromJson } =
+  store;
 
 onMounted(() => {
-  store.init()
-})
+  store.init();
+});
 </script>
 
 <style lang="scss" scoped>
