@@ -55,14 +55,6 @@ export const useOptionsStore = defineStore('options', () => {
     };
   };
 
-  watch(
-    state,
-    (newVal) => {
-      localStorage.setItem('option-list', JSON.stringify(newVal));
-    },
-    { deep: true },
-  );
-
   const downloadListJson = () => {
     const blob: Blob = new Blob([JSON.stringify(state.value, null, 2)], {
       type: 'application/json',
@@ -141,6 +133,14 @@ export const useOptionsStore = defineStore('options', () => {
 
     input.click();
   };
+
+  watch(
+    state,
+    (newVal) => {
+      localStorage.setItem('option-list', JSON.stringify(newVal));
+    },
+    { deep: true },
+  );
 
   return {
     state,

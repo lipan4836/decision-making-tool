@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <h1>Страница приложения</h1>
-    <router-link to="/home">
+    <router-link to="/">
       К инструменту
     </router-link>
   </div>

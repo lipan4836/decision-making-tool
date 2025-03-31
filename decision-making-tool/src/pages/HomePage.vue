@@ -38,24 +38,53 @@
       >
         Load List from File
       </ButtonElement>
-      <ButtonElement class="btns-block_btn">
+      <ButtonElement class="btns-block_btn" @click="handleStart">
         Start
       </ButtonElement>
     </div>
+
+    <ModalDialog v-if="showErrorModal" @close="showErrorModal = false">
+      <template #title>Error</template>
+      <p>{{ errorMessage  }}</p>
+    </ModalDialog>
   </main>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import ListItem from '../components/ListItem.vue';
 import ButtonElement from '../components/elements/ButtonElement.vue';
+import ModalDialog from '../components/ModalDialog.vue';
 import { useOptionsStore } from '../store/options';
+import { useRouter } from 'vue-router';
 
 const store = useOptionsStore();
 const { state } = storeToRefs(store);
 const { addOption, removeOption, updateOption, clearList, downloadListJson, uploadListFromJson } =
   store;
+
+const router = useRouter()
+const showErrorModal = ref(false)
+const errorMessage = ref('')
+
+const handleStart = () => {
+  if (store.state.list.length < 2) {
+    showErrorModal.value = true
+    errorMessage.value = 'You must add at least 2 options'
+    return
+  }
+
+  const hasEmptyFields = store.state.list.some((item) => !item.title.trim() || item.weight === null)
+
+  if (hasEmptyFields) {
+    showErrorModal.value = true
+    errorMessage.value = 'All options must have a name and weight'
+    return
+  }
+
+  router.push('/decision-making')
+}
 
 onMounted(() => {
   store.init();
