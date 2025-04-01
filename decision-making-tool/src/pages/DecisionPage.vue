@@ -2,14 +2,20 @@
   <main class="main">
     <h1>Decision Making Tool</h1>
     <div class="btns-block">
-      <ButtonElement class="btns-block_btn back">
+      <ButtonElement
+        class="btns-block_btn back"
+        @click="handleNavigateToMain"
+      >
         <Icon name="undo-2" />
       </ButtonElement>
       <ButtonElement class="btns-block_btn volume">
         <Icon name="volume-2" />
       </ButtonElement>
       <div class="btns-block_label duration">
-        <Icon name="timer" class="btns-block_label__svg" />
+        <Icon
+          name="timer"
+          class="btns-block_label__svg"
+        />
         <InputElement
           type="number"
           name="duration"
@@ -18,17 +24,48 @@
           :value="7"
         />
       </div>
-      <ButtonElement class="btns-block_btn start">
+      <ButtonElement
+        class="btns-block_btn start"
+        @click="handleStartClick"
+      >
         <Icon name="play" />
       </ButtonElement>
     </div>
+    <WheelCanvas
+      ref="wheelRef"
+      :options="options"
+    />
   </main>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import ButtonElement from '../components/elements/ButtonElement.vue';
 import InputElement from '../components/elements/InputElement.vue';
 import Icon from '../components/UI/Icon.vue';
+import WheelCanvas from '../components/wheel/WheelCanvas.vue';
+import { useOptionsStore } from '../store/options';
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
+const store = useOptionsStore()
+store.init()
+const options = store.state.list
+
+const wheelRef = ref<InstanceType<typeof WheelCanvas> | null>(null)
+
+console.log('options:', options)
+
+const handleStartClick = () => {
+  if (wheelRef.value) {
+    wheelRef.value.startAnimation()
+  }
+  console.log('start click')
+}
+
+const handleNavigateToMain = () => {
+  router.push('/')
+}
 </script>
 
 <style scoped lang="scss">

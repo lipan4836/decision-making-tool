@@ -38,14 +38,22 @@
       >
         Load List from File
       </ButtonElement>
-      <ButtonElement class="btns-block_btn" @click="handleStart">
+      <ButtonElement
+        class="btns-block_btn"
+        @click="handleStart"
+      >
         Start
       </ButtonElement>
     </div>
 
-    <ModalDialog v-if="showErrorModal" @close="showErrorModal = false">
-      <template #title>Error</template>
-      <p>{{ errorMessage  }}</p>
+    <ModalDialog
+      v-if="showErrorModal"
+      @close="showErrorModal = false"
+    >
+      <template #title>
+        Error
+      </template>
+      <p>{{ errorMessage }}</p>
     </ModalDialog>
   </main>
 </template>

@@ -1,12 +1,17 @@
 <template>
-  <div class="modal-overlay" @click.self="$emit('close')">
+  <div
+    class="modal-overlay"
+    @click.self="$emit('close')"
+  >
     <div class="modal-content">
       <div class="modal-header">
-        <h3><slot name="title"></slot></h3>
-        <button @click="$emit('close')">❌</button>
+        <h3><slot name="title" /></h3>
+        <button @click="$emit('close')">
+          ❌
+        </button>
       </div>
       <div class="modal-body">
-        <slot></slot>
+        <slot />
       </div>
     </div>
   </div>
