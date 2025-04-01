@@ -3,6 +3,7 @@ import type { ListItem } from '../types/types';
 import { fadeOutAudio, playAudio } from './audio';
 import drawPicker from '../components/wheel/pickerComponent';
 import drawWheel from '../components/wheel/wheelComponent';
+import { useSettingsStore } from '../store/settings';
 
 export default function useWheelAnimation(
   getContext: () => CanvasRenderingContext2D | null,
@@ -10,6 +11,7 @@ export default function useWheelAnimation(
   colors: string[],
   updateSelectedOption: (option: ListItem, color: string) => void,
 ) {
+  const settingsStore = useSettingsStore();
   const isSpining = ref(false);
   let animationId: number | null = null;
   let spinSound: HTMLAudioElement | null = null;
@@ -33,10 +35,9 @@ export default function useWheelAnimation(
     const randomRotations = minRotations + Math.random() * (maxRotations - minRotations);
     const totalRotation = 360 * randomRotations + Math.random() * 360;
 
-    const isMuted = JSON.parse(localStorage.getItem('isMuted') || 'false');
     spinSound = playAudio('/sounds/start.mp3', 0.6);
     pickSound = playAudio('/sounds/picked.mp3', 0.7);
-    if (!isMuted && spinSound) spinSound.play();
+    if (!settingsStore.isMuted && spinSound) spinSound.play();
 
     const animate = (currentTime: number) => {
       const elapsedTime = currentTime - startTime;
@@ -64,7 +65,7 @@ export default function useWheelAnimation(
         }
       } else {
         finishSpin(option, color);
-        if (!isMuted && pickSound) pickSound.play();
+        if (!settingsStore.isMuted && pickSound) pickSound.play();
       }
     };
 

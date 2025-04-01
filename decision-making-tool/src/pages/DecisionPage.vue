@@ -8,8 +8,8 @@
       >
         <Icon name="undo-2" />
       </ButtonElement>
-      <ButtonElement class="btns-block_btn volume">
-        <Icon name="volume-2" />
+      <ButtonElement class="btns-block_btn volume" @click="toggleMute">
+        <Icon :name="volumeIcon" />
       </ButtonElement>
       <div class="btns-block_label duration">
         <Icon
@@ -39,18 +39,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import ButtonElement from '../components/elements/ButtonElement.vue';
 import InputElement from '../components/elements/InputElement.vue';
 import Icon from '../components/UI/Icon.vue';
 import WheelCanvas from '../components/wheel/WheelCanvas.vue';
 import { useOptionsStore } from '../store/options';
 import { useRouter } from 'vue-router';
+import { useSettingsStore } from '../store/settings';
 
 const router = useRouter()
 const store = useOptionsStore()
+const settingsStore = useSettingsStore()
+
 store.init()
+
 const options = store.state.list
+const volumeIcon = computed(() => settingsStore.isMuted ? 'volume-off' : 'volume-2')
 
 const wheelRef = ref<InstanceType<typeof WheelCanvas> | null>(null)
 
@@ -65,6 +70,10 @@ const handleStartClick = () => {
 
 const handleNavigateToMain = () => {
   router.push('/')
+}
+
+const toggleMute = () => {
+  settingsStore.toggleMute()
 }
 </script>
 
