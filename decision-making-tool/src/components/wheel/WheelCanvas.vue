@@ -36,7 +36,7 @@ const canvas = ref<HTMLCanvasElement | null>(null);
 const colors = ref<string[]>(generateColorsForWheel(props.options.length));
 const selectedOption = ref<ListItem | null>(null);
 const selectedBgColor = ref('#383838');
-const selectedTextColor = ref('#E3E3E3');
+const selectedTextColor = ref('#E8E8E8');
 
 const getCanvasContext = () => {
   return canvas.value?.getContext('2d') || null;
@@ -49,7 +49,7 @@ const { isSpining, startSpin } = useWheelAnimation(
   (option: ListItem, color: string) => {
     selectedOption.value = option;
     selectedBgColor.value = color;
-    selectedTextColor.value = '#383838';
+    selectedTextColor.value = 'white';
   }
 );
 
@@ -78,45 +78,9 @@ const startAnimation = () => {
   startSpin(props.duration * 1000);
 };
 
-const getSelectedOption = (options: ListItem[], finalAngle: number, colors: string[]) => {
-    const normalizedAngle = ((finalAngle % 360) + 360) % 360;
-
-    const totalWeight = options.reduce((sum, item) => sum + (item.weight || 1), 0);
-    let accumulatedAngle = 0;
-
-    for (let i = 0; i < options.length; i += 1) {
-      const option = options[i];
-      const weight = option.weight !== null ? option.weight : 1;
-      const sliceAngle = (weight / totalWeight) * 360;
-
-      const segmentStart = accumulatedAngle;
-      const segmentEnd = accumulatedAngle + sliceAngle;
-
-      if (
-        (normalizedAngle >= segmentStart && normalizedAngle < segmentEnd) ||
-        (segmentEnd > 360 && normalizedAngle < segmentEnd % 360)
-      ) {
-        return { option, color: colors[i] };
-      }
-
-      accumulatedAngle = segmentEnd;
-    }
-
-    console.log('ошибка округления')
-    return { option: options[0], color: colors[0] };
-  };
-
 onMounted(() => {
   updateCanvas();
   window.addEventListener('resize', updateCanvas);
-
-  if (props.options.length > 0) {
-    const initialAngle = 270; // Указатель находится сверху (12 часов)
-    const { option, color } = getSelectedOption(props.options, initialAngle, colors.value);
-    selectedOption.value = option;
-    selectedBgColor.value = color;
-    selectedTextColor.value = '#383838';
-  }
 });
 
 onBeforeUnmount(() => {
