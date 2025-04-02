@@ -11,22 +11,51 @@
       />
     </ul>
     <div class="btns-block">
-      <ButtonElement class="btns-block_btn" @click="addOption"> Add Option </ButtonElement>
-      <ButtonElement class="btns-block_btn" @click="showPasteModal = true">
+      <ButtonElement
+        class="btns-block_btn"
+        @click="addOption"
+      >
+        Add Option
+      </ButtonElement>
+      <ButtonElement
+        class="btns-block_btn"
+        @click="showPasteModal = true"
+      >
         Paste List
       </ButtonElement>
-      <ButtonElement class="btns-block_btn" @click="clearList"> Clear List </ButtonElement>
-      <ButtonElement class="btns-block_btn short" @click="downloadListJson">
+      <ButtonElement
+        class="btns-block_btn"
+        @click="clearList"
+      >
+        Clear List
+      </ButtonElement>
+      <ButtonElement
+        class="btns-block_btn short"
+        @click="downloadListJson"
+      >
         Save List to File
       </ButtonElement>
-      <ButtonElement class="btns-block_btn short" @click="uploadListFromJson">
+      <ButtonElement
+        class="btns-block_btn short"
+        @click="uploadListFromJson"
+      >
         Load List from File
       </ButtonElement>
-      <ButtonElement class="btns-block_btn" @click="handleStart"> Start </ButtonElement>
+      <ButtonElement
+        class="btns-block_btn"
+        @click="handleStart"
+      >
+        Start
+      </ButtonElement>
     </div>
 
-    <ModalDialog v-if="showErrorModal" @close="showErrorModal = false">
-      <template #title> Error </template>
+    <ModalDialog
+      v-if="showErrorModal"
+      @close="showErrorModal = false"
+    >
+      <template #title>
+        Error
+      </template>
       <p>{{ errorMessage }}</p>
     </ModalDialog>
 
@@ -47,7 +76,6 @@ import ModalDialog from '../components/ModalDialog.vue';
 import { useOptionsStore } from '../store/options';
 import { useRouter } from 'vue-router';
 import type { OptionList } from '../types/types';
-import { checkNullElement } from '../utils/typesProtection';
 import ModalEditor from '../components/ModalEditor.vue';
 
 const store = useOptionsStore();
@@ -82,14 +110,22 @@ const handleStart = () => {
 
 const handlePasteList = (newList: OptionList) => {
   try {
-    const hasInvalidWeights = newList.list.some((item) => {
-      checkNullElement(item.weight);
-      isNaN(item.weight) || item.weight <= 0;
-    });
-
-    if (hasInvalidWeights) {
+    if (newList.list.length === 0) {
       showErrorModal.value = true;
-      errorMessage.value = 'All weights must be positive numbers';
+      errorMessage.value = 'List must contain at least one option';
+      return;
+    }
+
+    const invalidItems = newList.list.filter(item => 
+      !item.title.trim() || 
+      item.weight === null || 
+      isNaN(item.weight) || 
+      item.weight <= 0
+    );
+
+    if (invalidItems.length > 0) {
+      showErrorModal.value = true;
+      errorMessage.value = 'All options must have valid names and positive weights';
       return;
     }
 

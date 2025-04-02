@@ -1,17 +1,39 @@
 <template>
-  <ModalDialog @close="$emit('close')" class="modal">
-    <template #title> Paste Options List </template>
+  <ModalDialog
+    class="modal"
+    @close="$emit('close')"
+  >
+    <template #title>
+      Paste Options List
+    </template>
 
     <div class="paste-modal">
       <textarea
         ref="textareaRef"
+        v-model="textInput"
         class="paste-modal__textarea"
         placeholder="Paste a list of new options in a CSV-like format:&#10;&#10;title,1                  → | title                  | 1 |&#10;title with whitespaces,2 → | title with whitespaces | 2 |&#10;title , with , commas,3  → | title , with , commas  | 3 |&#10;title with 'quotes',4    → | title with 'quotes'    | 4 |"
-        v-model="textInput"
-      ></textarea>
+      />
 
-      <ButtonElement class="paste-modal__buttons" @click="handleConfirm"> Confirm </ButtonElement>
-      <ButtonElement class="paste-modal__buttons" @click="$emit('close')"> Cancel </ButtonElement>
+      <ButtonElement
+        class="paste-modal__buttons"
+        @click="handleConfirm"
+      >
+        Confirm
+      </ButtonElement>
+      <ButtonElement
+        class="paste-modal__buttons"
+        @click="$emit('close')"
+      >
+        Cancel
+      </ButtonElement>
+
+      <p
+        v-if="errorMessage"
+        class="error-message"
+      >
+        {{ errorMessage }}
+      </p>
     </div>
   </ModalDialog>
 </template>
@@ -19,6 +41,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import type { ListItem, OptionList } from '../types/types';
+import ButtonElement from './elements/ButtonElement.vue';
+import ModalDialog from './ModalDialog.vue';
 
 const emit = defineEmits<{
   (e: 'confirm', list: OptionList): void;
@@ -27,14 +51,21 @@ const emit = defineEmits<{
 
 const textInput = ref('');
 const textareaRef = ref<HTMLTextAreaElement | null>(null);
+const errorMessage = ref('');
 
 const handleConfirm = () => {
   try {
     const result = fromTxtToJson(textInput.value);
-    
+
+    if (result.list.length === 0) {
+      errorMessage.value = 'List must contain at least one valid option';
+      return;
+    }
+
     emit('confirm', result);
     emit('close');
   } catch (error) {
+    errorMessage.value = error instanceof Error ? error.message : 'Invalid format';
     console.error(error);
   }
 };
@@ -93,7 +124,7 @@ onMounted(() => {
 }
 
 .paste-modal {
-  width: 70%;
+  width: 94%;
   z-index: 11;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -122,6 +153,10 @@ onMounted(() => {
     background-color: #1a1a1a;
     transition: border-color 0.25s;
     text-align: center;
+
+    &:hover {
+      border-color: #646cff;
+    }
   }
 
   &__buttons:nth-child(1) {
@@ -130,6 +165,26 @@ onMounted(() => {
 
   &__buttons:nth-child(2) {
     grid-row-start: 5;
+  }
+
+  .error-message {
+    text-align: center;
+    grid-column: span 2 / span 2;
+    grid-row-start: 6;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .paste-modal {
+    background: white;
+
+    &__buttons {
+      background: #adadad;
+
+      :hover {
+        border-color: #747bff;
+      }
+    }
   }
 }
 </style>
