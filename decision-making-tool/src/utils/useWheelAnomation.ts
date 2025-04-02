@@ -44,18 +44,19 @@ export default function useWheelAnimation(
       const progress = Math.min(elapsedTime / duration, 1);
       const easedProgress = 1 - Math.pow(1 - progress, 3);
       const rotationAngle = easedProgress * totalRotation;
+      const drawAngle = rotationAngle;
+      const selectionAngle = (360 - (rotationAngle % 360) + 270) % 360;
 
       // Обновляем canvas с новым углом поворота
       const ctx = getContext();
       if (ctx) {
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-        drawWheel(ctx, options, colors, rotationAngle);
+        drawWheel(ctx, options, colors, drawAngle);
         drawPicker(ctx);
       }
 
-      const currentAngle = (360 - (rotationAngle % 360) + 270) % 360;
-      const { option, color } = getSelectedOption(options, currentAngle, colors);
+      const { option, color } = getSelectedOption(options, selectionAngle, colors);
       updateSelectedOption(option, color);
 
       if (progress < 1) {
@@ -66,6 +67,10 @@ export default function useWheelAnimation(
       } else {
         finishSpin(option, color);
         if (!settingsStore.isMuted && pickSound) pickSound.play();
+
+        console.log('Rotation angle:', rotationAngle);
+        console.log('Selection angle:', selectionAngle);
+        console.log('Selected option:', option.title);
       }
     };
 
@@ -80,9 +85,14 @@ export default function useWheelAnimation(
       spinSound.pause();
       spinSound.currentTime = 0;
     }
+
+    console.log('stopSpin was called');
+    console.log(selectedOption);
   };
 
   const getSelectedOption = (options: ListItem[], finalAngle: number, colors: string[]) => {
+    const normalizedAngle = ((finalAngle % 360) + 360) % 360;
+
     const totalWeight = options.reduce((sum, item) => sum + (item.weight || 1), 0);
     let accumulatedAngle = 0;
 
@@ -91,13 +101,18 @@ export default function useWheelAnimation(
       const weight = option.weight !== null ? option.weight : 1;
       const sliceAngle = (weight / totalWeight) * 360;
 
-      if (finalAngle >= accumulatedAngle && finalAngle < accumulatedAngle + sliceAngle) {
+      if (i === options.length - 1) {
+        return { option, color: colors[i] };
+      }
+
+      if (normalizedAngle < accumulatedAngle + sliceAngle) {
         return { option, color: colors[i] };
       }
 
       accumulatedAngle += sliceAngle;
     }
 
+    console.log('ошибка округления');
     return { option: options[0], color: colors[0] };
   };
 

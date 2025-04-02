@@ -8,7 +8,10 @@
       >
         <Icon name="undo-2" />
       </ButtonElement>
-      <ButtonElement class="btns-block_btn volume" @click="toggleMute">
+      <ButtonElement
+        class="btns-block_btn volume"
+        @click="toggleMute"
+      >
         <Icon :name="volumeIcon" />
       </ButtonElement>
       <div class="btns-block_label duration">
@@ -17,11 +20,14 @@
           class="btns-block_label__svg"
         />
         <InputElement
+          v-model.number="duration"
           type="number"
           name="duration"
           placeholder="Enter duration"
           class="btns-block_label__input"
-          :value="7"
+          min="3"
+          max="30"
+          @change="validateDuration"
         />
       </div>
       <ButtonElement
@@ -34,6 +40,8 @@
     <WheelCanvas
       ref="wheelRef"
       :options="options"
+      :duration="duration"
+      :rotation-angle="0"
     />
   </main>
 </template>
@@ -51,6 +59,7 @@ import { useSettingsStore } from '../store/settings';
 const router = useRouter()
 const store = useOptionsStore()
 const settingsStore = useSettingsStore()
+const duration = ref(7)
 
 store.init()
 
@@ -75,6 +84,11 @@ const handleNavigateToMain = () => {
 const toggleMute = () => {
   settingsStore.toggleMute()
 }
+
+const validateDuration = () => {
+  if (duration.value < 1) duration.value = 1;
+  if (duration.value > 10) duration.value = 10;
+};
 </script>
 
 <style scoped lang="scss">

@@ -13,10 +13,10 @@ export default function drawWheel(
 
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-  const startAngle = 0 + rotationAngle;
+  const rotationRad = (rotationAngle * Math.PI) / 180;
   const totalWeight = options.reduce((sum, item) => sum + (item.weight || 1), 0);
 
-  let currentAngle = startAngle;
+  let currentAngle = rotationRad;
 
   const fontSize = window.innerWidth < 550 ? 10 : 14;
   ctx.font = `${fontSize}px Helvetica`;

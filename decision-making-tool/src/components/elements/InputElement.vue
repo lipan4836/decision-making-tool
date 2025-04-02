@@ -18,7 +18,7 @@ defineProps<{
   className?: string | Record<string, boolean> | (string | Record<string, boolean>)[]
   id?: string
   name?: string
-  modelValue?: string
+  modelValue?: string | number
   placeholder?: string
   min?: string
 }>()
