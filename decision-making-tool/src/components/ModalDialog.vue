@@ -69,9 +69,13 @@ defineEmits(['close'])
   cursor: pointer;
 }
 
+.modal-body {
+  display: flex;
+}
+
 @media (prefers-color-scheme: light) {
-    .modal-content {
-      background: rgb(219, 219, 219);
-    }
+  .modal-content {
+    background: rgb(219, 219, 219);
+  }
 }
 </style>

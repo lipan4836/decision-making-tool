@@ -74,7 +74,6 @@ const updateCanvas = () => {
 
 const startAnimation = () => {
   if (props.options.length < 2) return;
-  console.log('Starting animation with duration:', props.duration * 1000);
   startSpin(props.duration * 1000);
 };
 

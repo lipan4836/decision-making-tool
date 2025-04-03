@@ -68,13 +68,10 @@ const volumeIcon = computed(() => settingsStore.isMuted ? 'volume-off' : 'volume
 
 const wheelRef = ref<InstanceType<typeof WheelCanvas> | null>(null)
 
-console.log('options:', options)
-
 const handleStartClick = () => {
   if (wheelRef.value) {
     wheelRef.value.startAnimation()
   }
-  console.log('start click')
 }
 
 const handleNavigateToMain = () => {

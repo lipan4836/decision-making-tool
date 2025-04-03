@@ -18,8 +18,6 @@ export default function useWheelAnimation(
   let pickSound: HTMLAudioElement | null = null;
 
   const startSpin = (duration: number) => {
-    console.log('startSpin was called with duration:', duration);
-
     if (isSpining.value) return;
     isSpining.value = true;
 
@@ -67,10 +65,6 @@ export default function useWheelAnimation(
       } else {
         finishSpin(option, color);
         if (!settingsStore.isMuted && pickSound) pickSound.play();
-
-        console.log('Rotation angle:', rotationAngle);
-        console.log('Selection angle:', selectionAngle);
-        console.log('Selected option:', option.title);
       }
     };
 
@@ -85,9 +79,6 @@ export default function useWheelAnimation(
       spinSound.pause();
       spinSound.currentTime = 0;
     }
-
-    console.log('stopSpin was called');
-    console.log(selectedOption);
   };
 
   const getSelectedOption = (options: ListItem[], finalAngle: number, colors: string[]) => {
@@ -112,7 +103,6 @@ export default function useWheelAnimation(
       accumulatedAngle += sliceAngle;
     }
 
-    console.log('ошибка округления');
     return { option: options[0], color: colors[0] };
   };
 
