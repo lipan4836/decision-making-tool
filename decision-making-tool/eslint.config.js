@@ -1,42 +1,42 @@
-import js from '@eslint/js';
-import ts from 'typescript-eslint';
-import vue from 'eslint-plugin-vue';
-import globals from 'globals';
+import globals from "globals";
+import pluginJs from "@eslint/js";
+import tseslint from "typescript-eslint";
+import prettierConfig from "eslint-config-prettier";
+import reactRecommended from "eslint-plugin-react/configs/recommended.js";
+import reactHooks from "eslint-plugin-react-hooks";
+import reactRefresh from "eslint-plugin-react-refresh";
 
 export default [
-  js.configs.recommended,
-  ...ts.configs.recommended,
-  ...vue.configs['flat/recommended'],
+  prettierConfig,
+  reactRecommended,
   {
-    ignores: ['**/dist/**', '**/node_modules/**'],
+    files: ["**/*.{js,ts,tsx}"],
     languageOptions: {
-      globals: { ...globals.browser, ...globals.node }
+      globals: { ...globals.browser, ...globals.node },
+    },
+    plugins: {
+      "react-hooks": reactHooks,
+      "react-refresh": reactRefresh,
     },
     rules: {
-      'no-console': 'off',
-      '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/no-unused-vars': 'warn',
-      'vue/multi-word-component-names': 'off'
-    }
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
+      "react-refresh/only-export-components": "warn",
+      "react/react-in-jsx-scope": "off",
+      "@typescript-eslint/consistent-type-assertions": [
+        "error",
+        { "assertionStyle": "never" },
+      ],
+      "@typescript-eslint/consistent-type-imports": "error",
+      "@typescript-eslint/explicit-function-return-type": "error",
+      "@typescript-eslint/explicit-member-accessibility": [
+        "error",
+        { "accessibility": "explicit", "overrides": { "constructors": "off" } },
+      ],
+      "@typescript-eslint/member-ordering": "error",
+      "class-methods-use-this": "error",
+    },
   },
-  {
-    files: ['**/*.vue'],
-    languageOptions: {
-      parser: vue.parser,
-      parserOptions: {
-        parser: '@typescript-eslint/parser',
-        ecmaVersion: 'latest'
-      }
-    },
-    rules: {
-      'vue/html-self-closing': ['error', {
-        html: {
-          void: 'always',
-          normal: 'always',
-          component: 'always'
-        }
-      }],
-      'vue/component-api-style': ['error', ['script-setup']]
-    }
-  }
+  pluginJs.configs.recommended,
+  ...tseslint.configs.recommended,
 ];

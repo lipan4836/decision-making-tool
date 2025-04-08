@@ -11,11 +11,6 @@
   font-synthesis: none;
 }
 
-#app {
-  max-width: 640px;
-  margin: auto;
-}
-
 a {
   font-weight: 500;
   color: #646cff;
@@ -32,33 +27,17 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
-
-  @media (width <= 550px) {
-    font-size: 12px;
-  }
-}
-
-.main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  
-  @media (width <= 550px) {
-    padding: 8px;
-  }
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
-  text-align: center;
 }
 
 button {
   cursor: pointer;
   padding: 0.6em 1.2em;
-  border: 1px solid #1A1A1A;
+  border: 1px solid transparent;
   border-radius: 8px;
   font-family: inherit;
   font-size: 1em;
@@ -69,6 +48,11 @@ button {
 
 button:hover {
   border-color: #646cff;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
 }
 
 @media (prefers-color-scheme: light) {
@@ -83,11 +67,5 @@ button:hover {
 
   button {
     background-color: #f9f9f9;
-  }
-}
-
-@media (width <= 550px) {
-  h1 {
-    font-size: 2em;
   }
 }
