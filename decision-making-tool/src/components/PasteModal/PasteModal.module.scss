@@ -37,5 +37,12 @@
     &__btn:nth-child(2) {
       grid-row-start: 5;
     }
+
+    .error-message {
+      grid-column: span 2;
+      margin-top: 8px;
+      color: #ff6b6b;
+      text-align: center;
+    }
   }
 }

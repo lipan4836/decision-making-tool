@@ -12,6 +12,7 @@ interface OptionsState {
   clearList: () => void;
   downloadListJson: () => void;
   uploadListFromJson: () => void;
+  setOptionsFromText: (data: { list: Option[]; lastId: number }) => void;
 }
 
 const INITIAL_STATE = {
@@ -136,6 +137,12 @@ export const useOptionsStore = create<OptionsState>()(
         };
 
         input.click();
+      },
+      setOptionsFromText: ({ list, lastId }): void => {
+        set({
+          list: [...list],
+          lastId,
+        });
       },
     }),
     {
