@@ -9,6 +9,12 @@ export interface OptionsList {
   lastId: number;
 }
 
+export interface PasteModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  closeOnOverlayClick?: boolean;
+}
+
 export interface ButtonProps {
   label: string;
   className?: string[];

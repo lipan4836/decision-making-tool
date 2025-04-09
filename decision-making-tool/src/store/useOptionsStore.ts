@@ -9,7 +9,7 @@ interface OptionsState {
   addOption: () => void;
   updateOption: (id: string, title: string, weight: number | null) => void;
   removeOption: (id: string) => void;
-  clearOptions: () => void;
+  clearList: () => void;
   downloadListJson: () => void;
   uploadListFromJson: () => void;
 }
@@ -67,7 +67,7 @@ export const useOptionsStore = create<OptionsState>()(
 
           return { list: newList };
         }),
-      clearOptions: (): void => set(INITIAL_STATE),
+      clearList: (): void => set(INITIAL_STATE),
       downloadListJson: (): void => {
         const state = get();
         const data = {
