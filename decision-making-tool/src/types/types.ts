@@ -15,6 +15,13 @@ export interface PasteModalProps {
   closeOnOverlayClick?: boolean;
 }
 
+export interface ErrorModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  closeOnOverlayClick?: boolean;
+  message: string;
+}
+
 export interface ButtonProps {
   label: string;
   className?: string[];

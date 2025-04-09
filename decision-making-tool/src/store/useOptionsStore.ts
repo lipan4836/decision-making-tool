@@ -20,7 +20,6 @@ const INITIAL_STATE = {
   lastId: 1,
 };
 
-// Функция-предикат для проверки типа
 function isStoredData(data: unknown): data is OptionsList {
   return (
     typeof data === 'object' &&
@@ -32,7 +31,6 @@ function isStoredData(data: unknown): data is OptionsList {
   );
 }
 
-// Функция для проверки массива опций
 function isOptionArray(items: unknown[]): items is Option[] {
   return items.every(
     (item): item is Option =>
