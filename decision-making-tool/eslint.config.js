@@ -18,6 +18,11 @@ export default [
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
     },
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
     rules: {
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",

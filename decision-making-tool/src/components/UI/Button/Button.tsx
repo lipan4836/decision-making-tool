@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { ButtonProps } from "../../../types/types";
 
 function Button({ label, className, onClick }: ButtonProps): ReactNode {
