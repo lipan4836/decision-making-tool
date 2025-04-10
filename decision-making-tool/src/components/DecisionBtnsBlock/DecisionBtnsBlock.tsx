@@ -20,6 +20,23 @@ function DecisionBtnsBlock(): ReactNode {
         <Icon idSprite="undo-2" />
       </button>
       <SoundToggle classes={`${styles['btns-block_btn']} ${styles.volume}`} />
+      <div className={`${styles['btns-block_label']} ${styles.duration}`}>
+        <Icon
+          classes={styles['btns-block_label__svg']}
+          idSprite="timer"
+        />
+        <input
+          type="number"
+          name="duration"
+          className={styles['btns-block_label__input']}
+          min={3}
+          max={30}
+          placeholder="Enter duration"
+        />
+      </div>
+      <button className={`${styles['btns-block_btn']} ${styles.start}`}>
+        <Icon idSprite="play" />
+      </button>
     </div>
   );
 }

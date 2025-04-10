@@ -30,4 +30,5 @@ export interface ButtonProps {
 
 export interface IconProps {
   idSprite: string;
+  classes?: string;
 }

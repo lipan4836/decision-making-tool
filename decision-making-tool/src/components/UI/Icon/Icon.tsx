@@ -1,9 +1,10 @@
 import type { ReactNode } from "react";
 import type { IconProps } from "../../../types/types";
 
-function Icon({idSprite}: IconProps): ReactNode {
+function Icon({idSprite, classes}: IconProps): ReactNode {
   return (
     <svg
+      className={classes ? classes : ''}
       width="24"
       height="24"
       viewBox="0 0 24 24"
