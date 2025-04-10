@@ -1,11 +1,12 @@
 import type { ReactNode } from "react";
+import DecisionBtnsBlock from "../../components/DecisionBtnsBlock/DecisionBtnsBlock";
 
 function DecisionPage(): ReactNode {
   return (
     <>
-      <main>
+      <main className="main">
         <h1>Decision Making Tool</h1>
-        <span>2 page</span>
+        <DecisionBtnsBlock />
       </main>
     </>
   )

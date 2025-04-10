@@ -27,3 +27,7 @@ export interface ButtonProps {
   className?: string[];
   onClick: () => void;
 }
+
+export interface IconProps {
+  idSprite: string;
+}
