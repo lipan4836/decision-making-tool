@@ -1,54 +1,101 @@
-# React + TypeScript + Vite
+# Decision Making Tool 🎡
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A powerful customizable spinning wheel application for random decision making with advanced options management. Built with React, TypeScript, and Vite.
 
-Currently, two official plugins are available:
+![Wheel Screenshot](public/screenshot.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features ✨
 
-## Expanding the ESLint configuration
+- 🎯 **Interactive Wheel** - Smooth spinning animation with physics-based stopping
+- ⚖️ **Weighted Options** - Assign custom probabilities to each choice
+- 💾 **Data Management**:
+  - Save/Load options as JSON files
+  - Import CSV-style text to quickly populate options
+- 🎨 **Automatic Color Generation** - Vibrant, distinguishable segment colors
+- 🔊 **Sound Effects** - With mute toggle (start/picked sounds)
+- ⚡ **Quick Input** - Add multiple options at once with text parsing
+- 📱 **Fully Responsive** - Works on all device sizes
+- 🔄 **State Persistence** - Remembers your settings and options
+- 🛠️ **Developer Friendly** - Modern tooling and type safety
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Technologies Used 🛠️
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
+- [React 19](https://react.dev/) (Latest version)
+- [TypeScript](https://www.typescriptlang.org/) (Type safety)
+- [Vite](https://vitejs.dev/) (Blazing fast builds)
+- [Zustand](https://zustand-demo.pmnd.rs/) (State management)
+- [Sass](https://sass-lang.com/) (Advanced styling)
+- [React Router](https://reactrouter.com/) (Navigation)
+
+## Installation 💻
+
+```
+git clone https://github.com/lipan4836/decision-making-tool.git
+cd decision-making-tool
+npm install
+npm run dev
+```
+
+## How to Use 🚀
+
+1. ### Add Options:
+   - Manually add items one by one
+   - Paste CSV-style text
+   - Import JSON files with pre-defined options
+2. ### Save/Load:
+   - Export your current setup as JSON
+   - Import previously saved configurations
+3. ### Spin:
+   - Set duration of spinning
+   - Click the spin button
+
+## Data Formats 📋
+
+### CSV Input Example:
+
+```
+title,1
+title with whitespaces,2
+title , with , commas,3
+title with "quotes",4
+```
+
+### JSON Structure:
+
+```
+{
+  "options": [
+    {
+      "id": "#1",
+      "title": "Option 1",
+      "weight": 10
     },
-  },
-})
+    {
+      "id": "#2",
+      "title": "Option 2",
+      "weight": 20
+    }
+  ],
+  "settings": {
+    "isMuted": false,
+    "duration": 5
+  }
+}
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Development Scripts 📜
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```npm run dev```	Start development server
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+```npm run build```	Create production build
+
+```npm run lint```	Run ESLint checks
+
+```npm run format```	Format code with Prettier
+
+```npm run style```	Lint SCSS files
+
+```npm run preview```	Preview production build
+
+
+
