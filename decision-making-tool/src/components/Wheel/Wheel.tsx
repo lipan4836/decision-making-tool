@@ -9,6 +9,11 @@ import { useWheelStore } from '../../store/useWheelStore';
 import type { Option } from '../../types/types';
 import { useSoundStore } from '../../store/useSoundStore';
 
+const VOLUME_LEVELS = {
+  START: 0.6,
+  PICKED: 0.7
+};
+
 function Wheel(): ReactElement {
   const { list: options } = useOptionsStore();
   const {
@@ -128,8 +133,8 @@ function Wheel(): ReactElement {
     
     startSoundRef.current.load();
     pickedSoundRef.current.load();
-    startSoundRef.current.volume = 0.6
-    pickedSoundRef.current.volume = 0.7
+    startSoundRef.current.volume = VOLUME_LEVELS.START
+    pickedSoundRef.current.volume = VOLUME_LEVELS.PICKED
 
     return (): void => {
       if (startSoundRef.current) {
