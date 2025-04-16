@@ -25,14 +25,11 @@ function Wheel(): ReactElement {
   const colors = useRef<string[]>([]);
   const currentAngle = useRef(0);
   const winnerDetected = useRef(false);
-
-  useEffect(() => {
-    colors.current = generateColorsForWheel(options.length);
-  }, [options.length]);
+  const colorsGenerated = useRef(false);
 
   const getCurrentSegment = useCallback(
     (angle: number): Option | null => {
-      const normalizedAngle = (360 + (angle % 360)) % 360;
+      const normalizedAngle = (360 - (angle % 360)) % 360;
       const totalWeight = options.reduce((sum, item) => sum + (item.weight || 1), 0);
       let accumulatedWeight = 0;
 
@@ -42,7 +39,6 @@ function Wheel(): ReactElement {
         accumulatedWeight += sliceAngle;
 
         if (normalizedAngle <= accumulatedWeight) {
-          console.log('current segment:', options[i]);
           return options[i];
         }
       }
@@ -76,8 +72,6 @@ function Wheel(): ReactElement {
         setWinner(currentSegment, colors.current[segmentIndex]);
       }
     }
-
-    console.log(angle);
   }, [isSpinning, options, getCurrentSegment, setWinner]);
 
   const easeOut = useCallback((t: number): number => 1 - Math.pow(1 - t, 4), []);
@@ -90,16 +84,25 @@ function Wheel(): ReactElement {
       setWinner(currentSegment, colors.current[segmentIndex]);
     }
 
+    currentAngle.current = finalAngle;
     winnerDetected.current = true;
     stopSpin();
-  }, [getCurrentSegment, options, setWinner, stopSpin]);
+    updateCanvas(finalAngle);
+  }, [getCurrentSegment, options, setWinner, stopSpin, updateCanvas]);
+
+  useEffect(() => {
+    if (!colorsGenerated.current && options.length > 0) {
+      colors.current = generateColorsForWheel(options.length);
+      colorsGenerated.current = true;
+      updateCanvas(0);
+    }
+  }, [options.length, updateCanvas]);
 
   useEffect(() => {
     if (!isSpinning) {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
-
       winnerDetected.current = false;
       return;
     }
@@ -116,14 +119,13 @@ function Wheel(): ReactElement {
       const progress = Math.min(elapsedTime / spinDuration, 1);
       const easedProgress = easeOut(progress);
       const rotationAngle = easedProgress * totalRotation;
-      const selectionAngle = (360 - (rotationAngle % 360) + 270) % 360;
 
       updateCanvas(rotationAngle);
 
       if (progress < 1) {
         animationRef.current = requestAnimationFrame(animate);
       } else {
-        finishSpin(selectionAngle);
+        finishSpin(rotationAngle);
       }
     };
 
@@ -138,8 +140,6 @@ function Wheel(): ReactElement {
 
   useEffect(() => {
     const handleResize = (): void => updateCanvas(currentAngle.current);
-
-    updateCanvas();
     window.addEventListener('resize', handleResize);
     return (): void => window.removeEventListener('resize', handleResize);
   }, [updateCanvas]);

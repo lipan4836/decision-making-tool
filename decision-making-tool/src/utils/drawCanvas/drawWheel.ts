@@ -13,7 +13,8 @@ export default function drawWheel(
 
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-  const rotationRad = (rotationAngle * Math.PI) / 180;
+  // Добавляем -90° чтобы первый сегмент начинался сверху (12 часов)
+  const rotationRad = ((rotationAngle - 90) * Math.PI) / 180;
   const totalWeight = options.reduce((sum, item) => sum + (item.weight || 1), 0);
 
   let currentAngle = rotationRad;
@@ -50,7 +51,7 @@ export default function drawWheel(
     const textX = centerX + Math.cos(middleAngle) * textRadius;
     const textY = centerY + Math.sin(middleAngle) * textRadius;
 
-    // настройка текста
+    // Настройка текста
     ctx.translate(textX, textY);
     ctx.rotate(middleAngle);
     ctx.shadowBlur = 10;
