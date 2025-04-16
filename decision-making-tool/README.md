@@ -63,8 +63,7 @@ title with "quotes",4
 ### JSON Structure:
 
 ```
-{
-  "options": [
+  [
     {
       "id": "#1",
       "title": "Option 1",
@@ -75,12 +74,7 @@ title with "quotes",4
       "title": "Option 2",
       "weight": 20
     }
-  ],
-  "settings": {
-    "isMuted": false,
-    "duration": 5
-  }
-}
+  ]
 ```
 
 ## Development Scripts 📜
