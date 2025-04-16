@@ -7,6 +7,7 @@ import drawWheel from '../../utils/drawCanvas/drawWheel';
 import drawPicker from '../../utils/drawCanvas/drawPicker';
 import { useWheelStore } from '../../store/useWheelStore';
 import type { Option } from '../../types/types';
+import { useSoundStore } from '../../store/useSoundStore';
 
 function Wheel(): ReactElement {
   const { list: options } = useOptionsStore();
@@ -19,6 +20,7 @@ function Wheel(): ReactElement {
     stopSpin,
     setWinner,
   } = useWheelStore();
+  const { isMuted } = useSoundStore();
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number | null>(null);
@@ -26,6 +28,26 @@ function Wheel(): ReactElement {
   const currentAngle = useRef(0);
   const winnerDetected = useRef(false);
   const colorsGenerated = useRef(false);
+
+  const startSoundRef = useRef<HTMLAudioElement | null>(null);
+  const pickedSoundRef = useRef<HTMLAudioElement | null>(null);
+
+  const playStartSound = useCallback(() => {
+    if (isMuted || !startSoundRef.current) return;
+    
+    startSoundRef.current.currentTime = 0;
+    startSoundRef.current.play().catch(e => console.error("Failed to play start sound:", e));
+  }, [isMuted]);
+
+  const playPickedSound = useCallback(() => {
+    if (isMuted || !pickedSoundRef.current || !startSoundRef.current) return;
+    
+    startSoundRef.current.pause();
+    startSoundRef.current.currentTime = 0;
+    
+    pickedSoundRef.current.currentTime = 0;
+    pickedSoundRef.current.play().catch(e => console.error("Failed to play picked sound:", e));
+  }, [isMuted]);
 
   const getCurrentSegment = useCallback(
     (angle: number): Option | null => {
@@ -88,7 +110,9 @@ function Wheel(): ReactElement {
     winnerDetected.current = true;
     stopSpin();
     updateCanvas(finalAngle);
-  }, [getCurrentSegment, options, setWinner, stopSpin, updateCanvas]);
+
+    playPickedSound();
+  }, [getCurrentSegment, options, setWinner, stopSpin, updateCanvas, playPickedSound]);
 
   useEffect(() => {
     if (!colorsGenerated.current && options.length > 0) {
@@ -99,6 +123,27 @@ function Wheel(): ReactElement {
   }, [options.length, updateCanvas]);
 
   useEffect(() => {
+    startSoundRef.current = new Audio('/sounds/start.mp3');
+    pickedSoundRef.current = new Audio('/sounds/picked.mp3');
+    
+    startSoundRef.current.load();
+    pickedSoundRef.current.load();
+    startSoundRef.current.volume = 0.6
+    pickedSoundRef.current.volume = 0.7
+
+    return (): void => {
+      if (startSoundRef.current) {
+        startSoundRef.current.pause();
+        startSoundRef.current = null;
+      }
+      if (pickedSoundRef.current) {
+        pickedSoundRef.current.pause();
+        pickedSoundRef.current = null;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
     if (!isSpinning) {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
@@ -106,6 +151,8 @@ function Wheel(): ReactElement {
       winnerDetected.current = false;
       return;
     }
+
+    playStartSound();
 
     const startTime = performance.now();
     const minRotation = 5;
@@ -136,7 +183,7 @@ function Wheel(): ReactElement {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [isSpinning, duration, easeOut, finishSpin, updateCanvas]);
+  }, [isSpinning, duration, easeOut, finishSpin, updateCanvas, playStartSound]);
 
   useEffect(() => {
     const handleResize = (): void => updateCanvas(currentAngle.current);

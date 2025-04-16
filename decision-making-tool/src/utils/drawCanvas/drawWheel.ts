@@ -13,7 +13,7 @@ export default function drawWheel(
 
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-  // Добавляем -90° чтобы первый сегмент начинался сверху (12 часов)
+  // Указатель на 12 часов
   const rotationRad = ((rotationAngle - 90) * Math.PI) / 180;
   const totalWeight = options.reduce((sum, item) => sum + (item.weight || 1), 0);
 
